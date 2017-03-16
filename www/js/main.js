@@ -26,7 +26,7 @@
 
 'use strict';
 
-var VERSION = '2.0.2'; // match to version in config.xml
+var VERSION = '2.0.3'; // match to version in config.xml
 
 var Crypto = require("crypto");
 var Bitcore = require("bitcore-lib");
@@ -34,7 +34,7 @@ var Reverse = require("buffer-reverse");
 
 
 var PORT = 25698;
-var WARNFEE = 500000; // satoshis TODO update
+var WARNFEE = 1000000; // satoshis TODO update
 var SAT2BTC = 100000000; // conversion
 var COINNET = 'livenet';
 //var COINNET = 'testnet';
@@ -56,6 +56,7 @@ var ui = {
     serverUrlDialog: null,
     serverUrlText: null,
     optionCheckUpdateButton: null,
+    optionPrivacyPolicyButton: null,
     optionServerUrlChangeButton: null,
     serverUrlSubmitButton: null,
     serverUrlRestoreDefaultButton: null,
@@ -147,6 +148,7 @@ var update_server = {
 };
 
 var default_server_url = "https://digitalbitbox.com/smartverification/index.php",
+    privacy_policy_url = "https://digitalbitbox.com/policies",
     comserver_url = "";
 
 var localData = {
@@ -208,6 +210,7 @@ function init()
     ui.header.addEventListener("touchend", hideOptionButtons, false);
     ui.optionsIcon.addEventListener("touchend", toggleOptions, false);
     ui.optionCheckUpdateButton.addEventListener("touchend", function(){ checkUpdatePost(true) }, false);
+    ui.optionPrivacyPolicyButton.addEventListener("touchend", privacyPolicyUrl, false);
     ui.optionServerUrlChangeButton.addEventListener("touchend", serverUrl, false);
     ui.serverUrlSubmitButton.addEventListener("touchend", serverUrlSubmit, false);
     ui.serverUrlRestoreDefaultButton.addEventListener("touchend", serverUrlRestoreDefault, false);
@@ -495,6 +498,12 @@ function waiting() {
     server_poll_pause = false;
     verification_in_progress = false;
     displayDialog(dialog.waiting);
+}
+
+function privacyPolicyUrl() {
+    console.log('Following Url', privacy_policy_url);
+    cordova.InAppBrowser.open(privacy_policy_url, '_blank', 'location=yes');
+    waiting();
 }
 
 function followUrl() {
